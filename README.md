@@ -1,54 +1,91 @@
-# React + TypeScript + Vite
+TTM
+TTM is a web application built using React, TypeScript, and Vite. It serves as a template or starting point for developing scalable and maintainable web applications.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Table of Contents
+Features
 
-Currently, two official plugins are available:
+Getting Started
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Prerequisites
 
-## Expanding the ESLint configuration
+Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Running the Application
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Project Structure
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Available Scripts
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+License
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+Features
+React for building user interfaces
+
+TypeScript for static type checking
+
+Vite for fast and optimized builds
+
+Tailwind CSS for utility-first styling
+
+ESLint for code linting and maintaining code quality
+
+Getting Started
+Prerequisites
+Ensure you have the following installed on your machine:
+
+Node.js (v14 or above)
+
+npm (v6 or above)
+
+Installation
+Clone the repository:
+
+bash
+Copy
+Edit
+git clone https://github.com/DhanushP0/TTM.git
+cd TTM
+Install dependencies:
+
+bash
+Copy
+Edit
+npm install
+Running the Application
+To start the development server with hot module replacement:
+
+bash
+Copy
+Edit
+npm run dev
+The application will be available at http://localhost:5173/ by default.
+
+Project Structure
+plaintext
+Copy
+Edit
+TTM/
+├── public/                 # Static assets
+├── src/                    # Source code
+│   ├── components/         # Reusable components
+│   ├── pages/              # Page components
+│   ├── App.tsx             # Root component
+│   └── main.tsx            # Application entry point
+├── index.html              # HTML template
+├── package.json            # Project metadata and scripts
+├── tailwind.config.js      # Tailwind CSS configuration
+├── tsconfig.json           # TypeScript configuration
+└── vite.config.ts          # Vite configuration
+Available Scripts
+npm run dev - Starts the development server.
+
+npm run build - Builds the application for production.
+
+npm run preview - Previews the production build.
+
+npm run lint - Runs ESLint to analyze code for potential issues.
+
+License
+This project is licensed under the MIT License.
+
+For more information, visit the DhanushP0/TTM GitHub repository.
