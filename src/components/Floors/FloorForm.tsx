@@ -37,9 +37,14 @@ export default function FloorForm({ floorId, onSuccess, onCancel }: FloorFormPro
 
       if (error) throw error
       setBuildings(data || [])
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     }
+    
   }
 
   const fetchFloor = async () => {
@@ -55,9 +60,14 @@ export default function FloorForm({ floorId, onSuccess, onCancel }: FloorFormPro
         setFloorNumber(data.floor_number)
         setBuildingId(data.building_id)
       }
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     }
+    
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -112,11 +122,16 @@ export default function FloorForm({ floorId, onSuccess, onCancel }: FloorFormPro
       setTimeout(() => {
         onSuccess();
       }, 1000);
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unexpected error occurred.');
+      }
     } finally {
       setLoading(false);
     }
+    
   };
 
   return (

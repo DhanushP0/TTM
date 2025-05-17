@@ -186,8 +186,12 @@ export default function Timetable() {
       })
 
       setBuildings(buildingsWithData)
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     } finally {
       setLoading(false)
     }
@@ -216,10 +220,13 @@ export default function Timetable() {
           successToast.classList.remove('translate-y-0', 'opacity-100')
         }, 3000)
       }
-    } catch (error: any) {
-      console.error('Error deleting class:', error)
-      setError(error.message)
-    }
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
+    }    
   }
 
   const handleCleanupTimetable = async () => {
@@ -253,10 +260,13 @@ export default function Timetable() {
 
       // Refresh the data
       fetchData();
-    } catch (error: any) {
-      console.error('Error clearing timetable:', error);
-      setError('Failed to clear timetable');
-    }
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
+    }    
   };
 
   const handleDeleteClick = (e: React.MouseEvent, cls: TimetableEntry) => {

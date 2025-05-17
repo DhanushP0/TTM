@@ -48,11 +48,16 @@ export default function Buildings() {
 
       if (error) throw error
       setBuildings(data || [])
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unexpected error occurred.');
+      }
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
+    
   }
 
   const handleDelete = async (id: number) => {
@@ -64,8 +69,12 @@ export default function Buildings() {
 
       if (error) throw error
       setBuildings(buildings.filter(building => building.id !== id))
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     }
   }
 

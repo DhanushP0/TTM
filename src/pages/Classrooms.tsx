@@ -59,11 +59,15 @@ export default function Classrooms() {
 
       if (error) throw error
       setClassrooms(data || [])
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unexpected error occurred.');
+      }
     } finally {
-      setLoading(false)
-    }
+      setLoading(false);
+    }    
   }
 
   const handleDelete = async (id: number) => {
@@ -75,9 +79,14 @@ export default function Classrooms() {
 
       if (error) throw error
       setClassrooms(classrooms.filter(classroom => classroom.id !== id))
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     }
+    
   }
 
   const handleDeleteClick = (e: React.MouseEvent, item: Classroom) => {

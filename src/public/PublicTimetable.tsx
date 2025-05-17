@@ -174,8 +174,12 @@ export default function PublicTimetable() {
         hour12: true,
         timeZone: 'Asia/Kolkata'
       }))
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     } finally {
       setLoading(false)
       setRefreshing(false)

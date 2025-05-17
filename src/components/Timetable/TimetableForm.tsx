@@ -86,9 +86,14 @@ export default function TimetableForm({ entryId, onSuccess, onCancel }: Timetabl
 
       if (error) throw error
       setTeachers(data || [])
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     }
+    
   }
 
   const fetchBuildings = async () => {
@@ -100,9 +105,14 @@ export default function TimetableForm({ entryId, onSuccess, onCancel }: Timetabl
 
       if (error) throw error
       setBuildings(data || [])
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     }
+    
   }
 
   const fetchFloors = async () => {
@@ -115,9 +125,14 @@ export default function TimetableForm({ entryId, onSuccess, onCancel }: Timetabl
 
       if (error) throw error
       setFloors(data || [])
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     }
+    
   }
 
   const fetchClassrooms = async () => {
@@ -130,9 +145,14 @@ export default function TimetableForm({ entryId, onSuccess, onCancel }: Timetabl
 
       if (error) throw error
       setClassrooms(data || [])
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     }
+    
   }
 
   const fetchEntry = async () => {
@@ -165,9 +185,14 @@ export default function TimetableForm({ entryId, onSuccess, onCancel }: Timetabl
           setClassroomId(data.classroom.id)
         }
       }
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     }
+    
   }
 
   const checkTimeSlotAvailability = async (
@@ -301,11 +326,16 @@ export default function TimetableForm({ entryId, onSuccess, onCancel }: Timetabl
       setTimeout(() => {
         onSuccess()
       }, 1000)
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unexpected error occurred.');
+      }
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
+    
   }
 
   return (

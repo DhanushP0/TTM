@@ -7,7 +7,7 @@ export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | null>(null)
   const navigate = useNavigate()
 
   interface LoginFormEvent extends React.FormEvent<HTMLFormElement> { }
@@ -25,11 +25,15 @@ export default function Login() {
 
       if (error) throw error
       navigate('/timetable')
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unexpected error occurred.');
+      }
     } finally {
-      setLoading(false)
-    }
+      setLoading(false);
+    }    
   }
 
   return (

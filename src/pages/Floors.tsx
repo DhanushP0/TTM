@@ -54,8 +54,12 @@ export default function Floors() {
 
       if (error) throw error
       setFloors(data || [])
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     } finally {
       setLoading(false)
     }
@@ -70,9 +74,14 @@ export default function Floors() {
 
       if (error) throw error
       setFloors(floors.filter(floor => floor.id !== id))
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     }
+    
   }
 
   const handleDeleteClick = (e: React.MouseEvent, item: Floor) => {

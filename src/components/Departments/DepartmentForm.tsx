@@ -32,9 +32,14 @@ export default function DepartmentForm({ departmentId, onSuccess, onCancel }: De
       if (data) {
         setName(data.name)
       }
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     }
+    
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -81,11 +86,16 @@ export default function DepartmentForm({ departmentId, onSuccess, onCancel }: De
       setTimeout(() => {
         onSuccess();
       }, 1000);
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unexpected error occurred.');
+      }
     } finally {
       setLoading(false);
     }
+    
   };
 
   return (

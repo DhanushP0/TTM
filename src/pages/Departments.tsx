@@ -47,8 +47,12 @@ export default function Departments() {
 
       if (error) throw error
       setDepartments(data || [])
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     } finally {
       setLoading(false)
     }
@@ -63,9 +67,14 @@ export default function Departments() {
 
       if (error) throw error
       setDepartments(departments.filter(department => department.id !== id))
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     }
+    
   }
 
   const handleDeleteClick = (e: React.MouseEvent, item: Department) => {

@@ -73,7 +73,7 @@ export default function ClassroomDisplayTable() {
     };
 
     let current = getMinutes(currentTime);
-    let start = getMinutes(startTime);
+    const start = getMinutes(startTime);
     let end = getMinutes(endTime);
 
     if (end < start) {

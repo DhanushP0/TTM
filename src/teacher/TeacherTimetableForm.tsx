@@ -237,8 +237,12 @@ export default function TeacherTimetableForm(_: TeacherTimetableFormProps) {
       const { data, error } = await supabase.from('buildings').select('*').order('name');
       if (error) throw error;
       setBuildings(data || []);
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     }
   };
 
@@ -253,9 +257,13 @@ export default function TeacherTimetableForm(_: TeacherTimetableFormProps) {
       setFloors(data || []);
       setFloorId('');
       setClassroomId('');
-    } catch (error: any) {
-      setError(error.message);
-    }
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
+    }    
   };
 
   const fetchClassrooms = async () => {
@@ -268,9 +276,13 @@ export default function TeacherTimetableForm(_: TeacherTimetableFormProps) {
       if (error) throw error;
       setClassrooms(data || []);
       setClassroomId('');
-    } catch (error: any) {
-      setError(error.message);
-    }
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
+    }    
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

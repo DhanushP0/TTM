@@ -38,8 +38,15 @@ export default function BuildingForm({ buildingId, onSuccess, onCancel }: Buildi
           description: data.description || ''
         })
       }
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
+    }
+    finally {
+      setLoading(false);
     }
   }
 
@@ -87,11 +94,16 @@ export default function BuildingForm({ buildingId, onSuccess, onCancel }: Buildi
       setTimeout(() => {
         onSuccess();
       }, 1000);
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unexpected error occurred.');
+      }
     } finally {
       setLoading(false);
     }
+
   };
 
   return (

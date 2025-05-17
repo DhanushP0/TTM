@@ -54,9 +54,14 @@ export default function ClassroomForm({ classroomId, onSuccess, onCancel }: Clas
 
       if (error) throw error
       setBuildings(data || [])
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     }
+
   }
 
   const fetchFloors = async () => {
@@ -69,9 +74,14 @@ export default function ClassroomForm({ classroomId, onSuccess, onCancel }: Clas
 
       if (error) throw error
       setFloors(data || [])
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     }
+
   }
 
   const fetchClassroom = async () => {
@@ -94,9 +104,13 @@ export default function ClassroomForm({ classroomId, onSuccess, onCancel }: Clas
         setBuildingId(data.floor.building_id)
         setFloorId(data.floor_id)
       }
-    } catch (error: any) {
-      setError(error.message)
-    }
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
+    }    
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -151,11 +165,16 @@ export default function ClassroomForm({ classroomId, onSuccess, onCancel }: Clas
       setTimeout(() => {
         onSuccess();
       }, 1000);
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unexpected error occurred.');
+      }
     } finally {
       setLoading(false);
     }
+
   };
 
   return (

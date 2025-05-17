@@ -308,10 +308,14 @@ export default function TeacherDashboard() {
           successToast.classList.remove('translate-y-0', 'opacity-100')
         }, 3000)
       }
-    } catch (error: any) {
-      console.error('Error deleting class:', error)
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     }
+    
   }
 
   const handleDeleteClick = (e: React.MouseEvent, cls: AssignedClass) => {
@@ -357,10 +361,14 @@ export default function TeacherDashboard() {
       setShowEditModal(false);
       setEditingClass(null);
       fetchAssignedClasses();
-    } catch (error: any) {
-      console.error('Error updating class:', error);
-      setError(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     }
+    
   };
 
   useEffect(() => {
@@ -429,9 +437,14 @@ export default function TeacherDashboard() {
           fetchFloorsData(),
           fetchClassroomsData(),
         ])
-      } catch (error: any) {
-        setError(error.message)
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError('An unknown error occurred.');
+        }
       }
+      
     }
 
     fetchInitialData()
@@ -506,10 +519,13 @@ export default function TeacherDashboard() {
       if (!teacherRows || teacherRows.length === 0) throw new Error('No teacher found with this email')
 
       setTeacherId(teacherRows[0].id)
-    } catch (error: any) {
-      console.error('Error fetching teacher data:', error)
-      setError(error.message)
-    }
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
+    }    
   }
 
   const fetchBuildingsData = async () => {
@@ -521,10 +537,13 @@ export default function TeacherDashboard() {
 
       if (buildingsError) throw buildingsError
       setBuildings(buildingsData || [])
-    } catch (error: any) {
-      console.error('Error fetching buildings:', error)
-      setError(error.message)
-    }
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
+    }    
   }
 
   const fetchFloorsData = async () => {
@@ -536,10 +555,13 @@ export default function TeacherDashboard() {
 
       if (floorsError) throw floorsError
       setFloors(floorsData || [])
-    } catch (error: any) {
-      console.error('Error fetching floors:', error)
-      setError(error.message)
-    }
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
+    }    
   }
 
   const fetchClassroomsData = async () => {
@@ -551,10 +573,13 @@ export default function TeacherDashboard() {
 
       if (classroomsError) throw classroomsError
       setClassrooms(classroomsData || [])
-    } catch (error: any) {
-      console.error('Error fetching classrooms:', error)
-      setError(error.message)
-    }
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
+    }    
   }
 
   const fetchAssignedClasses = async () => {
@@ -609,10 +634,14 @@ export default function TeacherDashboard() {
       if (error) throw error;
       setAssignedClasses(data || []);
       setLoading(false);
-    } catch (error: any) {
-      console.error('Error fetching assigned classes:', error);
-      setError(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     }
+    
   };
 
   const groupClassesByClassroom = (classes: AssignedClass[]): GroupedClass[] => {
@@ -694,10 +723,13 @@ export default function TeacherDashboard() {
 
       setShowEditStatusModal(false);
       setSelectedClass(null);
-    } catch (error: any) {
-      console.error('Error updating status:', error);
-      setError(error.message);
-    }
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
+    }    
   };
 
   const getClassStatus = (cls: AssignedClass): string => {

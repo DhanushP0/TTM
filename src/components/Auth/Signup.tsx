@@ -14,7 +14,7 @@ export default function Signup() {
     roleId: ''
   })
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | null>(null)
   const navigate = useNavigate()
   const [departments, setDepartments] = useState<{ id: number; name: string }[]>([])
   const [roles, setRoles] = useState<{ id: number; name: string }[]>([])
@@ -69,20 +69,6 @@ export default function Signup() {
     }))
   }
 
-  interface SignupFormData {
-    email: string
-    password: string
-    firstName: string
-    lastName: string
-    phoneNumber?: string
-    departmentId?: string
-  }
-
-  interface AuthResponse {
-    data: { user: object | null; session: object | null } | null
-    error: { message: string } | null
-  }
-
   interface InsertResponse {
     error: { message: string } | null
   }
@@ -93,14 +79,6 @@ export default function Signup() {
     setError(null)
 
     try {
-      // First, create the auth user
-      const { data: authData, error: authError }: AuthResponse = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-      })
-
-      if (authError) throw authError
-
       // Then, create the teacher record
       const { error: teacherError }: InsertResponse = await supabase
         .from('teachers')
@@ -114,15 +92,19 @@ export default function Signup() {
             role_id: formData.roleId ? parseInt(formData.roleId) : null
           }
         ])
-
       if (teacherError) throw teacherError
 
       navigate('/login')
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unexpected error occurred.');
+      }
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
+    
   }
 
   return (
