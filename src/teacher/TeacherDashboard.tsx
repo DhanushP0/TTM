@@ -589,7 +589,8 @@ export default function TeacherDashboard() {
       const now = new Date();
       const istOffset = 330 * 60 * 1000; // IST is UTC+5:30
       const todayIST = new Date(now.getTime() + istOffset).toISOString().split('T')[0];
-
+      const tomorrowIST = new Date(now.getTime() + istOffset + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+      
       let query = supabase
         .from('timetable')
         .select(`
@@ -626,7 +627,7 @@ export default function TeacherDashboard() {
       if (activeFilter === 'today') {
         query = query.eq('date', todayIST);
       } else if (activeFilter === 'upcoming') {
-        query = query.gt('date', todayIST);
+        query = query.eq('date', tomorrowIST);
       }
 
       const { data, error } = await query;
@@ -641,7 +642,6 @@ export default function TeacherDashboard() {
         setError('An unknown error occurred.');
       }
     }
-    
   };
 
   const groupClassesByClassroom = (classes: AssignedClass[]): GroupedClass[] => {
@@ -1073,7 +1073,7 @@ export default function TeacherDashboard() {
               whileHover={{ scale: activeFilter !== 'upcoming' ? 1.05 : 1 }}
               whileTap={{ scale: 0.97 }}
             >
-              Upcoming
+              Tomorrow
             </motion.button>
           </div>
         </motion.div>

@@ -19,6 +19,8 @@ import TeacherTimetableForm from './teacher/TeacherTimetableForm'
 import SelectBuildingFloorPage from './public/SelectBuildingFloorPage'
 import ClassroomDisplayPage from './public/ClassroomDisplayPage'
 import PageNotFound from './pages/PageNotFound'
+import ForgotPassword from './components/Auth/ForgotPassword'
+import ResetPassword from './components/Auth/ResetPassword'
 
 export default function AppRoutes() {
   const [session, setSession] = useState<Session | null>(null)
@@ -102,6 +104,8 @@ export default function AppRoutes() {
           path="/signup"
           element={!session ? <Signup /> : <Navigate to="/login" />}
         />
+         <Route path="/forgot-password" element={<ForgotPassword />} />
+         <Route path="/reset-password" element={<ResetPassword />} />
         <Route
           path="/public-timetable"
           element={<PublicTimetable />}

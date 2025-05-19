@@ -18,22 +18,39 @@ export default function Login() {
     setError(null)
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      // First attempt to sign in
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
-      if (error) throw error
+      if (authError) throw authError
+
+      // After successful authentication, fetch teacher role with proper headers
+      const { data: teacherData, error: teacherError } = await supabase
+        .from('teachers')
+        .select('role_id')
+        .eq('email', email)
+        .single()
+        .throwOnError()
+
+      if (teacherError) {
+        console.error('Error fetching teacher data:', teacherError)
+        throw new Error('Failed to fetch user role')
+      }
+
+      // Successfully logged in and got role, navigate to dashboard
       navigate('/timetable')
     } catch (error) {
+      console.error('Login error:', error)
       if (error instanceof Error) {
-        setError(error.message);
+        setError(error.message)
       } else {
-        setError('An unexpected error occurred.');
+        setError('An unexpected error occurred during login.')
       }
     } finally {
-      setLoading(false);
-    }    
+      setLoading(false)
+    }
   }
 
   return (
@@ -114,7 +131,7 @@ export default function Login() {
                 <label htmlFor="password" className="block text-sm font-medium text-gray-300">
                   Password
                 </label>
-                <a href="#" className="text-sm font-medium text-teal-500 hover:text-teal-400">
+                <a href="/forgot-password" className="text-sm font-medium text-teal-500 hover:text-teal-400">
                   Forgot password?
                 </a>
               </div>

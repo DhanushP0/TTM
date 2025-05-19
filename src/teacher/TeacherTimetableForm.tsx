@@ -5,6 +5,7 @@ import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import Papa from 'papaparse';
 import NavBar from './NavBar';
 import { getCurrentISTDate } from '../utils/timeUtils';
+import * as XLSX from 'xlsx';
 
 // Enhanced Animation Variants
 const pageTransition = {
@@ -354,24 +355,7 @@ export default function TeacherTimetableForm(_: TeacherTimetableFormProps) {
     setIsDragging(false);
   };
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(false);
-
-    const files = e.dataTransfer.files;
-    if (files && files[0]) {
-      processCSVUpload(files[0]);
-    }
-  };
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      processCSVUpload(file);
-    }
-  };
-
-  const processCSVUpload = async (file: File) => {
+  const processFile = async (file: File) => {
     try {
       setLoading(true);
       setUploadProgress(0);
@@ -384,23 +368,34 @@ export default function TeacherTimetableForm(_: TeacherTimetableFormProps) {
         });
       }, 200);
 
-      const text = await file.text();
-
-      // Parse CSV with proper configuration
+      const fileType = file.name.split('.').pop()?.toLowerCase();
       let rows: any[] = [];
-      Papa.parse(text, {
-        header: true,
-        skipEmptyLines: true,
-        delimiter: ',',
-        transform: (value: string) => value.trim(),
-        complete: (result) => {
-          rows = result.data;
-        },
-        error: (error: Error) => {
-          console.error('CSV parsing error:', error);
-          throw new Error(`CSV parsing error: ${error.message}`);
-        }
-      });
+
+      if (fileType === 'xlsx' || fileType === 'xls') {
+        // Handle Excel files
+        const data = await file.arrayBuffer();
+        const workbook = XLSX.read(data);
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+        rows = XLSX.utils.sheet_to_json(worksheet);
+      } else if (fileType === 'csv') {
+        // Handle CSV files
+        const text = await file.text();
+        Papa.parse(text, {
+          header: true,
+          skipEmptyLines: true,
+          delimiter: ',',
+          transform: (value: string) => value.trim(),
+          complete: (result) => {
+            rows = result.data;
+          },
+          error: (error: Error) => {
+            console.error('CSV parsing error:', error);
+            throw new Error(`CSV parsing error: ${error.message}`);
+          }
+        });
+      } else {
+        throw new Error('Unsupported file format. Please use Excel (.xlsx, .xls) or CSV files.');
+      }
 
       clearInterval(progressInterval);
       setUploadProgress(100);
@@ -421,18 +416,33 @@ export default function TeacherTimetableForm(_: TeacherTimetableFormProps) {
       if (error) throw error;
 
       setSuccess(true);
-
-      // Show success message briefly before redirecting
       setTimeout(() => {
-        navigate('/teacher-dashboard'); // Redirect to dashboard
+        navigate('/teacher-dashboard');
       }, 1500);
 
     } catch (error: any) {
-      console.error('CSV processing error:', error);
+      console.error('File processing error:', error);
       setError(error.message);
       setUploadProgress(0);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+
+    const files = e.dataTransfer.files;
+    if (files && files[0]) {
+      processFile(files[0]);
+    }
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      processFile(file);
     }
   };
 
@@ -616,7 +626,7 @@ export default function TeacherTimetableForm(_: TeacherTimetableFormProps) {
                               >
                                 <input
                                   type="file"
-                                  accept=".csv"
+                                  accept=".csv,.xlsx,.xls"
                                   onChange={handleFileChange}
                                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                                   disabled={loading}
@@ -628,7 +638,7 @@ export default function TeacherTimetableForm(_: TeacherTimetableFormProps) {
                                   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
                                   </svg>
-                                  Choose CSV File
+                                  Choose File
                                 </button>
                               </motion.div>
                               <p className="mt-2 text-sm text-gray-500">
@@ -652,7 +662,7 @@ export default function TeacherTimetableForm(_: TeacherTimetableFormProps) {
                           )}
 
                           <p className="mt-3 text-xs text-gray-500">
-                            CSV format: ClassName, StartTime, EndTime, Date, BuildingId, FloorId, ClassroomId
+                            Supported formats: Excel (.xlsx, .xls) or CSV with columns: ClassName, StartTime, EndTime, Date, BuildingId, FloorId, ClassroomId
                           </p>
                         </div>
 
