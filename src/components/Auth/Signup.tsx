@@ -74,11 +74,19 @@ export default function Signup() {
   }
 
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setLoading(true)
-    setError(null)
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
 
     try {
+      // Sign up the user and send a confirmation email
+      const { error: signUpError } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (signUpError) throw signUpError;
+
       // Then, create the teacher record
       const { error: teacherError }: InsertResponse = await supabase
         .from('teachers')
@@ -89,12 +97,14 @@ export default function Signup() {
             email: formData.email,
             phone_number: formData.phoneNumber || null,
             department_id: formData.departmentId ? parseInt(formData.departmentId) : null,
-            role_id: formData.roleId ? parseInt(formData.roleId) : null
-          }
-        ])
-      if (teacherError) throw teacherError
+            role_id: formData.roleId ? parseInt(formData.roleId) : null,
+          },
+        ]);
 
-      navigate('/login')
+      if (teacherError) throw teacherError;
+
+      // Redirect to the confirmation email page
+      navigate('/confirm-email');
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -104,7 +114,6 @@ export default function Signup() {
     } finally {
       setLoading(false);
     }
-    
   }
 
   return (
