@@ -21,6 +21,8 @@ import ClassroomDisplayPage from './public/ClassroomDisplayPage'
 import PageNotFound from './pages/PageNotFound'
 import ForgotPassword from './components/Auth/ForgotPassword'
 import ResetPassword from './components/Auth/ResetPassword'
+import ConfirmEmail from './components/Auth/ConfirmEmail'
+import VerifySignup from './components/Auth/VerifySignup'
 
 export default function AppRoutes() {
   const [session, setSession] = useState<Session | null>(null)
@@ -104,8 +106,10 @@ export default function AppRoutes() {
           path="/signup"
           element={!session ? <Signup /> : <Navigate to="/login" />}
         />
-         <Route path="/forgot-password" element={<ForgotPassword />} />
-         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/confirm-email" element={<ConfirmEmail />} />
+        <Route path="/auth/v1/verify" element={<VerifySignup />} />
         <Route
           path="/public-timetable"
           element={<PublicTimetable />}
