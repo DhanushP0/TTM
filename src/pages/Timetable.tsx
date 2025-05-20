@@ -61,12 +61,12 @@ export default function Timetable() {
   const [classToDelete, setClassToDelete] = useState<TimetableEntry | null>(null)
   const [cls, setCls] = useState<TimetableEntry | null>(null)
   const [showCleanupModal, setShowCleanupModal] = useState(false);
-  const [showMondayReminder, setShowMondayReminder] = useState(false);
+  const [showSaturdayReminder, setShowSaturdayReminder] = useState(false);
 
   // Add this function to check if it's Monday
-  const isMondayReminder = () => {
+  const isSaturdayReminder = () => {
     const today = new Date();
-    return today.getDay() === 1; // 1 represents Monday
+    return today.getDay() === 6; // 0,1,2,3,4,5,6 represents sunday, monday, tuesday, wednesday, thursday, friday, saturday
   };
 
   useEffect(() => {
@@ -87,8 +87,8 @@ export default function Timetable() {
 
   // Add this useEffect to check for Monday
   useEffect(() => {
-    if (isMondayReminder()) {
-      setShowMondayReminder(true);
+    if (isSaturdayReminder()) {
+      setShowSaturdayReminder(true);
     }
   }, []);
 
@@ -986,14 +986,14 @@ export default function Timetable() {
 
           {/* Add Modal UI for Monday reminder */}
           <AnimatePresence>
-            {showMondayReminder && (
+            {showSaturdayReminder && (
               <>
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 0.4 }}
                   exit={{ opacity: 0 }}
                   className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60]"
-                  onClick={() => setShowMondayReminder(false)}
+                  onClick={() => setShowSaturdayReminder(false)}
                 />
                 <div className="fixed inset-0 flex items-center justify-center z-[70] overflow-y-auto px-4">
                   <motion.div
@@ -1024,7 +1024,7 @@ export default function Timetable() {
                     <div className="mt-8 flex justify-end space-x-3">
                       <motion.button
                         type="button"
-                        onClick={() => setShowMondayReminder(false)}
+                        onClick={() => setShowSaturdayReminder(false)}
                         className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
@@ -1034,7 +1034,7 @@ export default function Timetable() {
                       <motion.button
                         type="button"
                         onClick={() => {
-                          setShowMondayReminder(false);
+                          setShowSaturdayReminder(false);
                           setShowCleanupModal(true);
                         }}
                         className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
